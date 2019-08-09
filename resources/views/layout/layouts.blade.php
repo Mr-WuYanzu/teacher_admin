@@ -31,7 +31,6 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     {{--<img src="http://t.cn/RCzsdCq" class="layui-nav-img">--}}
-                    {{$businessInfo['shop_name']}}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -47,18 +46,17 @@
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="javascript:;">商品管理</a>
+                        <a class="" href="javascript:;">讲师管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="/goodsAdd">添加商品</a></dd>
-                            <dd><a href="/goodslist">查看商品</a></dd>
+                            <dd><a href="/apply">申请成为讲师</a></dd>
+                            <dd><a href="">个人中心</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item">
-                        <a class="" href="javascript:;">订单管理</a>
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">课程管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="/orderlist">订单列表</a></dd>
-                            <dd><a href="/orderAccess">已结算订单</a></dd>
-                            <dd><a href="/orderNoAccess">待支付订单</a></dd>
+                            <dd><a href="/curr">课程添加</a></dd>
+                            <dd><a href="">课程列表</a></dd>
                         </dl>
                     </li>
                 </ul>
