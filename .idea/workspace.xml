@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="605b7a9d-ab35-4b59-8c9e-6d15e91a85ab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/curr/CurrController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/curr/CurrController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/curr/curr.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/curr/curr.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/layouts.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/layouts.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/curr/classhour.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/curr/classhour.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,7 +28,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
+            <state relative-caret-position="513">
               <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
             </state>
           </provider>
@@ -41,7 +37,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/curr/CurrController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
+            <state relative-caret-position="504">
               <caret line="252" column="46" selection-start-line="252" selection-start-column="46" selection-end-line="252" selection-end-column="46" />
               <folding>
                 <element signature="e#45#66#0#PHP" expanded="true" />
@@ -58,11 +54,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/upload/UploadController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="627">
-              <caret line="36" column="64" lean-forward="true" selection-start-line="36" selection-start-column="64" selection-end-line="36" selection-end-column="64" />
+            <state relative-caret-position="266">
+              <caret line="23" column="46" lean-forward="true" selection-start-line="23" selection-start-column="46" selection-end-line="23" selection-end-column="46" />
               <folding>
                 <element signature="e#47#84#0#PHP" expanded="true" />
               </folding>
@@ -71,19 +67,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/storage/bos/YourConf.php">
+        <entry file="phar://$PROJECT_DIR$/storage/bos/BaiduBce.phar/src/BaiduBce/Services/Bos/BosOptions.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="13" column="43" lean-forward="true" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="43" />
+            <state relative-caret-position="76">
+              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/storage/bos/YourConf.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="13" column="43" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/curr/classhour.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="40" selection-start-line="40" selection-end-line="40" />
+            <state relative-caret-position="525">
+              <caret line="257" column="11" lean-forward="true" selection-start-line="257" selection-start-column="11" selection-end-line="257" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -165,10 +170,10 @@
         <option value="$PROJECT_DIR$/resources/views/layout/layouts.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/curr/chapter.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/curr/CurrController.php" />
-        <option value="$PROJECT_DIR$/resources/views/curr/classhour.blade.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/storage/bos/YourConf.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/upload/UploadController.php" />
+        <option value="$PROJECT_DIR$/resources/views/curr/classhour.blade.php" />
       </list>
     </option>
   </component>
@@ -306,6 +311,11 @@
             <path>
               <item name="teacher_admin" type="b2602c69:ProjectViewProjectNode" />
               <item name="teacher_admin" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="teacher_admin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="teacher_admin" type="462c0819:PsiDirectoryNode" />
               <item name="storage" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -390,12 +400,12 @@
       <workItem from="1565347781239" duration="5510000" />
       <workItem from="1565397283802" duration="24919000" />
       <workItem from="1565567697198" duration="3058000" />
-      <workItem from="1565578730158" duration="4452000" />
+      <workItem from="1565578730158" duration="6174000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107045000" />
+    <option name="totallyTimeSpent" value="108767000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -581,31 +591,6 @@
     <entry file="file://$PROJECT_DIR$/storage/bos/.idea/misc.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/curr/CurrController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="252" column="46" selection-start-line="252" selection-start-column="46" selection-end-line="252" selection-end-column="46" />
-          <folding>
-            <element signature="e#45#66#0#PHP" expanded="true" />
-            <element signature="e#6143#8032#0#PHP" />
-            <element signature="e#8048#8452#0#PHP" />
-            <element signature="e#8469#9134#0#PHP" />
-            <element signature="e#9151#9814#0#PHP" />
-            <element signature="e#9831#10496#0#PHP" />
-            <element signature="e#10513#11354#0#PHP" />
-            <element signature="e#11375#11716#0#PHP" />
-            <element signature="e#11735#12477#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/storage/bos/CdnSampleConf.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -631,17 +616,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/curr/classhour.blade.php">
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="40" selection-start-line="40" selection-end-line="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/storage/bos/YourConf.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="13" column="43" lean-forward="true" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="43" />
+        <state relative-caret-position="513">
+          <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -654,11 +632,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/upload/UploadController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
-          <caret line="36" column="64" lean-forward="true" selection-start-line="36" selection-start-column="64" selection-end-line="36" selection-end-column="64" />
+        <state relative-caret-position="266">
+          <caret line="23" column="46" lean-forward="true" selection-start-line="23" selection-start-column="46" selection-end-line="23" selection-end-column="46" />
           <folding>
             <element signature="e#47#84#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/curr/CurrController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="252" column="46" selection-start-line="252" selection-start-column="46" selection-end-line="252" selection-end-column="46" />
+          <folding>
+            <element signature="e#45#66#0#PHP" expanded="true" />
+            <element signature="e#6143#8032#0#PHP" />
+            <element signature="e#8048#8452#0#PHP" />
+            <element signature="e#8469#9134#0#PHP" />
+            <element signature="e#9151#9814#0#PHP" />
+            <element signature="e#9831#10496#0#PHP" />
+            <element signature="e#10513#11354#0#PHP" />
+            <element signature="e#11375#11716#0#PHP" />
+            <element signature="e#11735#12477#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/storage/bos/YourConf.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="43" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/curr/classhour.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="257" column="11" lean-forward="true" selection-start-line="257" selection-start-column="11" selection-end-line="257" selection-end-column="11" />
         </state>
       </provider>
     </entry>
