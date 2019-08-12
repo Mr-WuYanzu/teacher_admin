@@ -56,7 +56,9 @@
                         <a class="" href="javascript:;">课程管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="/curr">课程添加</a></dd>
-                            <dd><a href="">课程列表</a></dd>
+                            <dd><a href="/currList">课程列表</a></dd>
+                            <dd><a href="/chapter">章节添加</a></dd>
+                            <dd><a href="/classHour">课时添加</a></dd>
                         </dl>
                     </li>
                 </ul>
