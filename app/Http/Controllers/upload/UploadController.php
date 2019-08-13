@@ -11,14 +11,79 @@ use BaiduBce\Util\Time;
 use BaiduBce\Util\MimeTypes;
 use BaiduBce\Http\HttpHeaders;
 use BaiduBce\Services\Bos\BosClient;
+use BaiduBce\Services\Bos\StorageClass;
+use Illuminate\Support\Facades\Redis;
 
 class UploadController extends Controller
 {
-    protected $client;
+    public $video_ext=[
+        'mpg',
+        'avi0',
+        'mov',
+        'swf',
+    ];
     public function upload() {
+        set_time_limit(0);
+        $teacher_id=2;
+        $file = $_FILES['file']??null;
+        if(empty($file)){
+            return ['status'=>107,'msg'=>'请选择文件上传'];
+        }else if($file['error']==4){
+            return ['status'=>107,'msg'=>'请选择文件上传'];
+        }else if($file['error']==1){
+            return ['status'=>107,'msg'=>'上传文件过大'];
+        }
+        include storage_path().'/bos/BaiduBce.phar';
+        require storage_path().'/bos/YourConf.php';
+
+//新建BosClient
+        $client = new BosClient($BOS_TEST_CONFIG);
+        $bucketName='class-hour-video';
+        $objectName=$file['name'];
+
+        $ext = $this->getFileExt($file['name']);
+        $objectKey=uniqid().Str::random(5).'.'.$ext;
+        $fileName=$file['tmp_name'];
+        //利用options在通过文件上传Object的时候传入指定参数
+        $user_meta = array("x-bce-meta-key1" => "value1");
+        $response = $client->initiateMultipartUpload($bucketName, $objectKey);
+        $uploadId =$response->uploadId;
+        $options = array(
+            BosOptions::STORAGE_CLASS => StorageClass::STANDARD_IA,
+        );
+        $client->initiateMultipartUpload($bucketName, $objectName, $options);
+
+        //设置分块的开始偏移位置
+        $offset = 0;
+        $partNumber = 1;
+        //设置每块为5MB
+        $partSize = 5 * 1024 * 1024;
+        $length = $partSize;
+        $partList = array();
+        $bytesLeft = $file['size'];
+        //分块上传
+        while ($bytesLeft > 0) {
+            $length = ($length > $bytesLeft) ? $bytesLeft : $length;
+            $response = $client->uploadPartFromFile($bucketName, $objectKey, $uploadId,  $partNumber, $fileName, $offset, $length);
+            array_push($partList, array("partNumber"=>$partNumber, "eTag"=>$response->metadata["etag"]));
+            $offset += $length;
+            $partNumber++;
+            $bytesLeft -= $length;
+        }
+        //完成分块上传
+        $response = $client->completeMultipartUpload($bucketName, $objectKey, $uploadId, $partList);
+        $file_name = $response->location;
+        if(substr($file_name,0,4)=='http'){
+            return ['status'=>1000,'msg'=>'ok','filename'=>$file_name];
+        }else{
+            return ['status'=>103,'msg'=>'错误'];
+        }
+    }
+
+    public function CustomizedConfig() {
         $customizedConfig = array(
             BceClientConfigOptions::PROTOCOL => 'http',
-            BceClientConfigOptions::REGION => 'bj',
+            BceClientConfigOptions::REGION => 'gz',
             BceClientConfigOptions::CONNECTION_TIMEOUT_IN_MILLIS => 120 * 1000,
             BceClientConfigOptions::SOCKET_TIMEOUT_IN_MILLIS => 300 * 1000,
             BceClientConfigOptions::SEND_BUF_SIZE => 5 * 1024 * 1024,
@@ -29,7 +94,6 @@ class UploadController extends Controller
             ),
             'endpoint' => 'http://gz.bcebos.com',
         );
-
         //利用自定义配置创建BOSClient
         $customizedClient = new BosClient($customizedConfig);
 
@@ -38,6 +102,10 @@ class UploadController extends Controller
         $this->client->listBuckets($options);
     }
 
+        //获取文件后缀名
+    protected function getFileExt($name){
+        return pathinfo($name,PATHINFO_EXTENSION);
+    }
 
 
 
@@ -183,8 +251,5 @@ class UploadController extends Controller
 //        return uniqid().Str::random(5).'.'.$ext;
 //    }
 //
-//    //获取文件后缀名
-//    protected function getFileExt($name){
-//        return pathinfo($name,PATHINFO_EXTENSION);
-//    }
+
 }
