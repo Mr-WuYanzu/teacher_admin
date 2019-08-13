@@ -52,3 +52,5 @@ Route::get('/apply','teacher\TeacherController@apply');
 Route::post('/applyDo','teacher\TeacherController@applyDo');
 //课程添加
 Route::get('/curr','curr\CurrController@curr');
+#订单管理
+Route::get('/order','Order\OrderController@order');
