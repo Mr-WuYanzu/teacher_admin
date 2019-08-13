@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layout/layouts');
 });
 
 //用户申请成为讲师页面
@@ -20,23 +20,23 @@ Route::get('/apply','teacher\TeacherController@apply');
 //申请讲师执行
 Route::post('/applyDo','teacher\TeacherController@applyDo');
 //课程添加
-Route::get('/curr','curr\CurrController@curr');
+Route::get('/curr','Curr\CurrController@curr');
 //课程添加入库
-Route::post('/currAdd','curr\CurrController@currAdd');
+Route::post('/currAdd','Curr\CurrController@currAdd');
 //章节添加
-Route::get('/chapter','curr\CurrController@chapter');
+Route::get('/chapter','Curr\CurrController@chapter');
 //章节添加执行
-Route::post('/chapterAdd','curr\CurrController@chapterAdd');
+Route::post('/chapterAdd','Curr\CurrController@chapterAdd');
 //课程的章节号
-Route::post('/chapterNum','curr\CurrController@chapterNum');
+Route::post('/chapterNum','Curr\CurrController@chapterNum');
 //课时添加
-Route::get('/classHour','curr\CurrController@classHour');
+Route::get('/classHour','Curr\CurrController@classHour');
 //课时添加执行
-Route::post('/classHourAdd','curr\CurrController@classHourAdd');
+Route::post('/classHourAdd','Curr\CurrController@classHourAdd');
 //文件上传
 Route::get('/upload','upload\UploadController@upload');
 //章节的课时号
-Route::post('/classHourNum','curr\CurrController@classHourNum');
+Route::post('/classHourNum','Curr\CurrController@classHourNum');
 
 
 
@@ -44,13 +44,25 @@ Route::post('/classHourNum','curr\CurrController@classHourNum');
 Route::post('/getChapter','curr\CurrController@getChapter');
 
 //课程列表
-Route::get('/currList','curr\CurrController@currList');
+Route::get('/currList','Curr\CurrController@currList');
 //课程完结
-Route::post('/currEnd','curr\CurrController@currEnd');
+Route::post('/currEnd','Curr\CurrController@currEnd');
 //课程上架
-Route::post('/currUp','curr\CurrController@currUp');
+Route::post('/currUp','Curr\CurrController@currUp');
 //课程下架
-Route::post('/currDown','curr\CurrController@currDown');
+Route::post('/currDown','Curr\CurrController@currDown');
 //课程删除
-Route::post('/currDel','curr\CurrController@currDel');
+Route::post('/currDel','Curr\CurrController@currDel');
+
+//课程测试模块
+Route::prefix('/test')->group(function(){
+	//测试页面
+	Route::get('test','Curr\CurrTestController@test');
+	//获取课程章节
+	Route::post('getChapter','Curr\CurrTestController@getChapter');
+	//获取课程章节课时
+	Route::post('getClass','Curr\CurrTestController@getClass');
+	//获取课时视频
+	Route::post('getVideo','Curr\CurrTestController@getVideo');
+});
 
