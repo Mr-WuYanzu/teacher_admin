@@ -61,6 +61,12 @@
                             <dd><a href="/classHour">课时添加</a></dd>
                         </dl>
                     </li>
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">在线测试</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/test/test">课程测试</a></dd>
+                        </dl>
+                    </li>
                 </ul>
             </div>
         </div>
