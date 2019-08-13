@@ -1,5 +1,10 @@
-@extends('admin.index')
+@extends('layout.layouts')
+
 @section('title', '试题列表视图')
+
+@section('sidebar')
+    @parent
+@endsection
 
 @section('content')
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->

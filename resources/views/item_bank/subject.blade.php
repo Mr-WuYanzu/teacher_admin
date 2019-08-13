@@ -1,5 +1,10 @@
-@extends('admin.index')
+@extends('layout.layouts')
+
 @section('title', '题库管理')
+
+@section('sidebar')
+    @parent
+@endsection
 
 @section('content')
     <form class="layui-form" action="/subject_do" method="post">
