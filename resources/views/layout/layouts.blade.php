@@ -50,6 +50,7 @@
                         <dl class="layui-nav-child">
                             <dd><a href="/apply">申请成为讲师</a></dd>
                             <dd><a href="">个人中心</a></dd>
+                            <dd><a href="/teacher/balance">查询余额</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">

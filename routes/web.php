@@ -16,9 +16,9 @@ Route::get('/', function () {
 });
 
 //用户申请成为讲师页面
-Route::get('/apply','teacher\TeacherController@apply');
+Route::get('/apply','Teacher\TeacherController@apply');
 //申请讲师执行
-Route::post('/applyDo','teacher\TeacherController@applyDo');
+Route::post('/applyDo','Teacher\TeacherController@applyDo');
 //课程添加
 Route::get('/curr','Curr\CurrController@curr');
 //课程添加入库
@@ -65,4 +65,9 @@ Route::prefix('/test')->group(function(){
 	//获取课时视频
 	Route::post('getVideo','Curr\CurrTestController@getVideo');
 });
+
+//讲师查询余额页面
+Route::get('/teacher/balance','Teacher\TeacherController@balance');
+//查询余额
+Route::post('/teacher/getBalance','Teacher\TeacherController@getBalance');
 
