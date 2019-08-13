@@ -65,7 +65,7 @@ Route::get('/classHour','Curr\CurrController@classHour');
 //课时添加执行
 Route::post('/classHourAdd','Curr\CurrController@classHourAdd');
 //文件上传
-Route::get('/upload','upload\UploadController@upload');
+Route::post('/upload','upload\UploadController@upload');
 //章节的课时号
 Route::post('/classHourNum','Curr\CurrController@classHourNum');
 

@@ -193,6 +193,7 @@ class CurrController extends Controller
         $class_hour_name = $request->post('class_hour_name');
         $curr_id = $request->post('curr_id');
         $video_url = $request->post('video_url');
+        $live_url = $request->post('live_url');
         $class_type = $request->post('class_type');
         if(empty($curr_id)){
             return ['status'=>102,'msg'=>'请选择课程'];
@@ -202,6 +203,25 @@ class CurrController extends Controller
         }
         if(empty($class_hour_name)){
             return ['status'=>102,'msg'=>'请输入课时名称'];
+        }
+        //要添加数据库的数据
+        $data=[
+            'class_name'=>$class_hour_name,
+            'chapter_id'=>$chapter_id,
+            'curr_id'=>$curr_id,
+            'class_type'=>$class_type,
+            'create_time'=>time()
+        ];
+        if($class_type==1){
+            if(empty($live_url)){
+                return ['status'=>105,'msg'=>'请填写您的直播地址'];
+            }
+            $data['class_data']=$live_url;
+        }else if($class_type==2){
+            if(empty($video_url)){
+                return ['status'=>105,'msg'=>'请填写您的直播地址'];
+            }
+            $data['class_data']=$video_url;
         }
         //验证课程存在不存在
         $currResult = Curr::where(['t_id'=>$teacher_id,'curr_id'=>$curr_id])->first();
@@ -218,16 +238,9 @@ class CurrController extends Controller
         if($className){
             return ['status'=>122,'msg'=>'课时名称在此章节中已经存在，请更换'];
         }
+        //当前添加的课时号
+        $data['class_hour_num']= $chapterInfo['class_num']+1;
         //验证没问题，入库
-        $data=[
-            'class_name'=>$class_hour_name,
-            'chapter_id'=>$chapter_id,
-            'curr_id'=>$curr_id,
-            'class_type'=>$class_type,
-            'class_hour_num'=>$chapterInfo['class_num']+1,
-            'class_data'=>$video_url,
-            'create_time'=>time()
-        ];
         $result = ClassHour::insert($data);
         if($result){
             Chapter::where(['chapter_id'=>$chapter_id])->update(['class_num'=>$chapterInfo['class_num']+1]);
