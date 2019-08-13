@@ -1,4 +1,4 @@
-@extends('admin.index')
+@extends('layout.index')
 @section('title', '订单管理')
 
 @section('content')
