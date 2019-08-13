@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>管理员后台</title>
+    <title>教师后台</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <script src="{{asset('layui/layui.js')}}"></script>
     <script src="{{asset('js/jquery.js')}}"></script>
@@ -15,7 +15,7 @@
 
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">管理员后台</div>
+        <div class="layui-logo">教师后台</div>
 
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
@@ -83,6 +83,13 @@
                         <dl class="layui-nav-child">
                             <dd><a href="/currchapter/add">课程章节添加</a></dd>
                             <dd><a href="/currchapter/list">课程章节列表</a></dd>
+                        </dl>
+                    </li>
+
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">订单管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/order">订单列表</a></dd>
                         </dl>
                     </li>
                 </ul>

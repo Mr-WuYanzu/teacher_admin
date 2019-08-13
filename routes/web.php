@@ -102,3 +102,6 @@ Route::get('/teacher/balance','Teacher\TeacherController@balance');
 //查询余额
 Route::post('/teacher/getBalance','Teacher\TeacherController@getBalance');
 
+Route::get('/curr','curr\CurrController@curr');
+#订单管理
+Route::get('/order','Order\OrderController@order');
