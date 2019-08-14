@@ -11,7 +11,7 @@ class TeacherController extends Controller
     //用户申请成为讲师页面
     public function apply(Request $request){
         $type=1;
-        $user_id = 1;
+        $user_id =$request->user_id;
         if(empty($user_id)){
             echo '禁止访问，请登录';
         }

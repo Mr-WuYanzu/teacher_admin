@@ -15,8 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+
 //用户申请成为讲师页面
-Route::get('/apply','teacher\TeacherController@apply');
+Route::get('/apply/{user_id?}','teacher\TeacherController@apply');
 //申请讲师执行
 Route::post('/applyDo','teacher\TeacherController@applyDo');
 //课程添加
