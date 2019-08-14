@@ -12,6 +12,16 @@ use App\Http\Controllers\Controller;
  */
 class CommonController extends Controller
 {
+	/**
+	 * [跳转页面]
+	 * @param  [type] $msg [description]
+	 * @param  [type] $url [description]
+	 * @return [type]      [description]
+	 */
+    public function abort($msg,$url)
+    {
+    	echo "<script>alert('{$msg}');location.href='{$url}';</script>";
+    }
 
 	/**
 	 * [成功时的响应信息]

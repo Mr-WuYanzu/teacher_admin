@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\curr;
+namespace App\Http\Controllers\Curr;
 
 use App\curr\Chapter;
 use App\curr\ClassHour;
@@ -8,9 +8,15 @@ use App\curr\Curr;
 use App\curr\CurrCate;
 use App\Http\Controllers\upload\UploadController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
-class CurrController extends Controller
+use App\Http\Controllers\Common\CommonController;
+/**
+ * 课程模块类
+ * class CurrController
+ * @author   <[<email address>]>
+ * @package  App\Http\Controllers\Curr
+ * @date 2019-08-10
+ */
+class CurrController extends CommonController
 {
     //课程添加页面
     public function curr(){
@@ -22,6 +28,7 @@ class CurrController extends Controller
 
     //课程添加执行
     public function currAdd(Request $request){
+        //接收课程数据
         $teacher_id = 2;
         $curr_name = $request->post('curr_name');
         $curr_cate_id = $request->post('curr_cate_id');
@@ -65,14 +72,53 @@ class CurrController extends Controller
                 'is_show'=>1
             ];
         }
+        //检测是否有课程图片
+        if($request->hasFile('curr_img')){
+            $data['curr_img']=$this->uploadImg($request->curr_img);
+            if($data['curr_img']==2){
+                $this->abort('上传课程图片失败','/curr');return;
+            }
+        }else{
+            $this->abort('请上传课程图片','/curr');return;
+        }
         //添加入库
         $result = Curr::insert($data);
         if($result){
-            return ['status'=>200,'msg'=>'添加成功'];
+            // return ['status'=>200,'msg'=>'添加成功'];
+            $this->abort('添加成功','/currList');
         }else{
-            return ['status'=>106,'msg'=>'添加失败'];
+            // return ['status'=>106,'msg'=>'添加失败'];
+            $this->abort('添加成功','/curr');
         }
 
+    }
+
+    /**
+     * [上传课程图片]
+     * @param  [type] $curr_img [description]
+     * @return [type]           [description]
+     */
+    public function uploadImg($curr_img)
+    {
+        //检测文件上传过程中是否出错
+        if($curr_img->isValid()){
+            //获取文件路径
+            $path=$curr_img->path();
+            //获取文件扩展名
+            $extension=$curr_img->getClientOriginalExtension();
+            //拼接文件随机名称
+            $fileName=md5(time().rand(1000,9999)).'.'.$extension;
+            //拼接存放文件夹名称
+            $dirName='curr/'.date('Ymd');
+            //上传临时文件
+            $result=$curr_img->storeAs($dirName,$fileName);
+            //上传成功返回路径,失败返回提示
+            if(!empty($result)){
+                return $result;
+            }else{
+                return 2;
+            }
+        }
     }
 
     //章节添加页面
@@ -369,6 +415,25 @@ class CurrController extends Controller
         }
     }
 
-
+    /**
+     * [检测课程名称唯一性]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function checkCurrName(Request $request)
+    {
+        //接收课程名称
+        $curr_name=$request->post('curr_name');
+        //实例化模型类
+        $currModel=new Curr();
+        //查询课程名称是否存在
+        $count=$currModel->where('curr_name',$curr_name)->count();
+        //检测结果,返回响应
+        if($count>0){
+            echo $this->json_fail('课程名称已被占用');
+        }else{
+            echo $this->json_success();
+        }
+    }
 
 }
