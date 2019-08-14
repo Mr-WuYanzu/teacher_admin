@@ -17,7 +17,7 @@ class TeacherController extends Controller
     //用户申请成为讲师页面
     public function apply(Request $request){
         $type=1;
-        $user_id = 1;
+        $user_id = 3;
         if(empty($user_id)){
             echo '禁止访问，请登录';
         }
@@ -37,12 +37,39 @@ class TeacherController extends Controller
         return view('teacher.apply',['type'=>$type]);
     }
 
+    //用户头像上传
+    public function headerImg(Request $request){
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $photo = $request->file('file');
+            $extension = $photo->extension();
+            $path = 'headerImg/'.date('Y-m-d');
+            if(!is_dir($path)){
+                mkdir($path,0777,true);
+            }
+
+            $store_result = $photo->store($path);
+            $output = [
+                'status'=>1000,
+                'path' => $store_result
+            ];
+            return $output;
+        }
+
+        return ['status'=>108,'msg'=>'未获取到上传文件或上传过程出错'];
+    }
+
+    //讲师申请执行
     public function applyDo(Request $request){
         $teacher_name = $request->post('teacher_name');
         $teacher_desc = $request->post('teacher_desc');
-        $user_id = 1;
-        if(empty($teacher_desc) || empty($teacher_name)){
+        $teacher_direction = $request->post('teacher_direction');
+        $header_img = $request->post('header_img');
+        $user_id = 3;
+        if(empty($teacher_desc) || empty($teacher_name) || empty($teacher_direction)){
             return ['status'=>102,'msg'=>'缺失参数'];
+        }
+        if(empty($header_img)){
+            return ['status'=>102,'msg'=>'请上传头像'];
         }
         //查询此用户有没有申请过
         $where=[
@@ -66,7 +93,9 @@ class TeacherController extends Controller
             't_name'=>$teacher_name,
             't_desc'=>$teacher_desc,
             'status'=>1,
-            'user_id'=>$user_id
+            'user_id'=>$user_id,
+            'teacher_direction'=>$teacher_direction,
+            'header_img'=>$teacher_direction,
         ];
         $result = Teacher::insert($data);
         if($result){
