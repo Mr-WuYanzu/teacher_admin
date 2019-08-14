@@ -91,6 +91,11 @@ class TeacherController extends Controller
         return view('teacher/getbalance',compact('teacherInfo'));
     }
 
+    /**
+     * [获取讲师余额]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function getBalance(Request $request)
     {
         //获取讲师id

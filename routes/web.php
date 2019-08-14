@@ -23,6 +23,8 @@ Route::post('/applyDo','Teacher\TeacherController@applyDo');
 Route::get('/curr','Curr\CurrController@curr');
 //课程添加入库
 Route::post('/currAdd','Curr\CurrController@currAdd');
+//检测课程名称唯一性
+Route::post('/curr/checkCurrName','Curr\CurrController@checkCurrName');
 //章节添加
 Route::get('/chapter','Curr\CurrController@chapter');
 //章节添加执行
@@ -70,4 +72,3 @@ Route::prefix('/test')->group(function(){
 Route::get('/teacher/balance','Teacher\TeacherController@balance');
 //查询余额
 Route::post('/teacher/getBalance','Teacher\TeacherController@getBalance');
-

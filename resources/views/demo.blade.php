@@ -1,29 +1,11 @@
 @extends('layout.layouts')
 
-@section('title', '课程添加')
-
-@section('sidebar')
-    @parent
-@endsection
-
 @section('content')
-
-<form class="layui-form" method="post" action="/currAdd" enctype="multipart/form-data"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-  <div class="layui-form-item">
+<form class="layui-form" method="post" action="/currAdd" enctype="multipart/form-data">
+	<div class="layui-form-item">
     <label class="layui-form-label">课程名称</label>
     <div class="layui-input-inline">
-      <input type="text" name="curr_name" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">课程分类</label>
-    <div class="layui-input-inline">
-      <select name="curr_cate_id" lay-filter="aihao">
-        <option value="">请选择分类</option>
-        @foreach($cateInfo as $v)
-        <option value="{{$v['curr_cate_id']}}"><?php echo str_repeat('&nbsp;',$v['level']*6);?>{{$v['cate_name']}}</option>
-        @endforeach
-      </select>
+      <input type="text" name="curr_name" id="curr_name" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
     </div>
   </div>
   <div class="layui-form-item">
@@ -32,7 +14,7 @@
       <input type="file" name="curr_img" autocomplete="off" class="layui-input">
     </div>
   </div>
-  <div class="layui-form-item">
+<div class="layui-form-item">
     <label class="layui-form-label">是否付费</label>
     <div class="layui-input-block">
       <input type="radio" class="is_pay" lay-filter='is_pay' name="is_pay" value="2" title="是">
@@ -53,7 +35,7 @@
   </div>
   <div class="layui-form-item">
     <div class="layui-input-block">
-      <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+      <button class="layui-btn" id="sub" lay-submit lay-filter="*">立即提交</button>
       <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
   </div>
@@ -61,22 +43,50 @@
 </form>
 
 <script type="text/javascript">
-    $(function(){
-        layui.use(['layer','form'],function(){
-            var layer = layui.layer;
-            var form = layui.form;
+	$(function(){
+		layui.use(['layer','form'],function(){
+			var layer=layui.layer;
+			var form=layui.form;
 
-            form.on('radio(is_pay)',function(data){
-                var val=data.value;
-                if(val==2){
-                    $('#price_div').prop('style','display:block');
-                }else if(val==1){
-                    $('#price_div').prop('style','display:none');
-                }
-            });
+			form.on('radio(is_pay)',function(data){
+				var val=data.value;
+				if(val==2){
+					$('#price_div').prop('style','display:block');
+				}else if(val==1){
+					$('#price_div').prop('style','display:none');
+				}
+			});
 
-        });
-    });
+			// $('#sub').click(function(){
+			// 	var curr_name=$('#curr_name').val();
+			// 	var reg=/^.{2,}$/;
+			// 	var flag=false;
+
+			// 	if(curr_name==''){
+			// 		layer.msg('课程名称必填',{icon:5,time:1000});
+			// 		return false;
+			// 	}else if(!reg.test(curr_name)){
+			// 		layer.msg('课程名称格式不正确',{icon:5,time:1000});
+			// 		return false;
+			// 	}else{
+			// 		// $.ajax({
+			// 		// 	url:'checkCurrName',
+			// 		// 	method:'post',
+			// 		// 	async:false,
+			// 		// 	data:{curr_name:curr_name},
+			// 		// 	success:function(res){
+
+			// 		// 	},
+			// 		// 	dataType:'json'
+			// 		// });
+			// 		flag==true;
+			// 		if(flag==false){
+			// 			return false;
+			// 		}
+			// 	}
+			// });
+		});
+	});
 </script>
 
 @endsection
