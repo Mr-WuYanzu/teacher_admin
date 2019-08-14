@@ -3,7 +3,13 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
+/**
+ * 验证登录中间件
+ * class CheckLogin
+ * @author   <[<gaojianbo>]>
+ * @package  App\Http\Middleware
+ * @date 2019-08-14
+ */
 class CheckLogin
 {
     /**
@@ -15,10 +21,8 @@ class CheckLogin
      */
     public function handle($request, Closure $next)
     {
-        $token = $_COOKIE['token']??null;
-        $userInfo = $_COOKIE['userInfo']??null;
-        if(empty($token) || empty($userInfo)){
-            return redirect()->away('/login');
+        if(!session('user')){
+            return redirect('login/login');
         }
         return $next($request);
     }

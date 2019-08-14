@@ -31,13 +31,16 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     {{--<img src="http://t.cn/RCzsdCq" class="layui-nav-img">--}}
+                    @if(session('user'))
+                    {{session('user')['user_name']}}
+                    @endif
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="/quitLogin">退了</a></li>
+            <li class="layui-nav-item"><a href="/login/quitLogin">退出</a></li>
         </ul>
     </div>
 
@@ -48,12 +51,15 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="javascript:;">讲师管理</a>
                         <dl class="layui-nav-child">
+                            @if(empty(session('user')))
                             <dd><a href="/apply">申请成为讲师</a></dd>
-                            <dd><a href="">个人中心</a></dd>
+                            @else
+                            <dd><a href="/teacher/center">个人中心</a></dd>
                             <dd><a href="/teacher/balance">查询余额</a></dd>
+                            @endif
                         </dl>
                     </li>
-                    <li class="layui-nav-item layui-nav-itemed">
+                    <li class="layui-nav-item">
                         <a class="" href="javascript:;">课程管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="/curr">课程添加</a></dd>
@@ -62,7 +68,7 @@
                             <dd><a href="/classHour">课时添加</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item layui-nav-itemed">
+                    <li class="layui-nav-item">
                         <a class="" href="javascript:;">在线测试</a>
                         <dl class="layui-nav-child">
                             <dd><a href="/test/test">课程测试</a></dd>

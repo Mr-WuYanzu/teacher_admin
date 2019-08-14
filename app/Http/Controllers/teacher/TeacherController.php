@@ -92,6 +92,23 @@ class TeacherController extends Controller
     }
 
     /**
+     * [讲师个人中心]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function center(Request $request)
+    {
+        //接收讲师id
+        $t_id=session('user_id');
+        //实例化模型类
+        $teacherModel=new Teacher();
+        //查询讲师信息
+        $teacherInfo=$teacherModel->where('t_id',$t_id)->first();
+        //渲染视图
+        return view('teacher/center',compact('teacherInfo'));
+    }
+
+    /**
      * [获取讲师余额]
      * @param  Request $request [description]
      * @return [type]           [description]
