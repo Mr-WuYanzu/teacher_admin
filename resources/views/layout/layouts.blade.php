@@ -68,6 +68,31 @@
                             <dd><a href="/test/test">课程测试</a></dd>
                         </dl>
                     </li>
+
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">题目管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/subject">添加题目分类</a></dd>
+                            <dd><a href="/subject_list">题目分类列表</a></dd>
+                        </dl>
+                    </li>
+
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">试题管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/test">添加试题</a></dd>
+                            <dd><a href="list_test">试题列表</a></dd>
+                        </dl>
+                    </li>
+
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">订单管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/order">订单列表</a></dd>
+                        </dl>
+                    </li>
+
+
                 </ul>
             </div>
         </div>

@@ -1,5 +1,10 @@
-@extends('admin.index')
+@extends('layout.layouts')
+
 @section('title', '题库列表')
+
+@section('sidebar')
+    @parent
+@endsection
 
 @section('content')
     <table class="layui-table">
