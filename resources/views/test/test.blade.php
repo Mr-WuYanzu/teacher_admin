@@ -58,7 +58,8 @@
 					$('#chapter_id').empty();
 					$('#chapter_id').append(new Option('请选择章节',''));
 					$('#class_id').empty();
-					$('#class_id').append(new Option('请选择章节',''));
+					$('#class_id').append(new Option('请选择课时',''));
+					$('#class_video').empty();
 					form.render();
 					return false;
 				}
@@ -85,6 +86,10 @@
 				var chapter_id=data.value;
 
 				if(chapter_id==''){
+					$('#class_id').empty();
+					$('#class_id').append(new Option('请选择课时',''));
+					$('#class_video').empty();
+					form.render();
 					layer.msg('请选择一个章节',{icon:5,time:1000});
 					return false;
 				}
@@ -99,7 +104,7 @@
 							}
 						}else{
 							$('#class_id').empty();
-							$('#class_id').append(new Option('请选择章节',''));
+							$('#class_id').append(new Option('请选择课时',''));
 						}
 						form.render();
 					}
@@ -112,6 +117,7 @@
 
 				if(class_id==''){
 					layer.msg('请选择一个课时',{icon:5,time:1000});
+					$('#class_video').empty();
 					return false;
 				}
 
@@ -120,7 +126,7 @@
 					{class_id:class_id},
 					function(res){
 						if(res!=2){
-							var _video="<video controls='controls' src='http://mouke.video.com"+res+"'></video>";
+							var _video="<video controls='controls' src='"+res+"'></video>";
 							if($('#class_video').children().is('video')!=true){
 								$('#class_video').append(_video);
 							}
