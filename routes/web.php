@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return view('layout/layouts');
 });
+
 #teacher后台
 Route::get('/teacher_admin',function(){
     return view('admin.index');
@@ -48,6 +49,14 @@ Route::get('/teacher_admin',function(){
     Route::post('/test_update_unique','subject\SubjectController@test_update_unique');
 //用户申请成为讲师页面
 Route::get('/apply','Teacher\TeacherController@apply');
+
+
+
+
+
+//用户申请成为讲师页面
+Route::get('/apply/{user_id?}','teacher\TeacherController@apply');
+
 //申请讲师执行
 Route::post('/applyDo','Teacher\TeacherController@applyDo');
 //课程添加
