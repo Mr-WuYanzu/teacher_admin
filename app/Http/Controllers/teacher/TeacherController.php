@@ -116,7 +116,7 @@ class TeacherController extends Controller
     public function getBalance(Request $request)
     {
         //获取讲师id
-        $t_id=$request->post('t_id');
+        $t_id=$request->get('t_id');
         //实例化模型类
         $teacherModel=new Teacher();
         //查询讲师余额
