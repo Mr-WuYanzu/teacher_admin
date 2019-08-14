@@ -35,7 +35,7 @@
                 完结
             @endif
         </td>
-        <td>{{$v['curr_detail']}}</td>
+        <td>{{str_replace(mb_substr($v['curr_detail'],20,mb_strlen($v['curr_detail'])),'...',$v['curr_detail'])}}</td>
         <td>{{$v['cate_name']}}</td>
         <td>
             @if($v['is_pay']==1)
