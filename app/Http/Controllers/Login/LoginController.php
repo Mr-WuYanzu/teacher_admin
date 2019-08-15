@@ -112,6 +112,11 @@ class LoginController extends Controller
     	}
     }
 
+    /**
+     * [登出处理]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function quitLogin(Request $request)
     {
     	$request->session()->forget('user');

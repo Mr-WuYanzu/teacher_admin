@@ -30,7 +30,7 @@
     </tr>
     <tr>
     	<td>
-    		<a class="layui-btn layui-btn-normal">查询余额</a>
+    		<a href="/teacher/balance?t_id={{$teacherInfo->t_id}}" class="layui-btn layui-btn-normal">查询余额</a>
     	</td>
     </tr>
 </table>
