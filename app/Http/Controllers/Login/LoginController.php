@@ -22,6 +22,8 @@ class LoginController extends Controller
 	 */
     public function login(Request $request)
     {
+
+//        dd(encrypt('admin123'));
     	//渲染视图
     	return view('login/login');
     }
@@ -104,7 +106,7 @@ class LoginController extends Controller
     		$t_id=$teacherModel->where('user_id',$user->user_id)->value('t_id');
     		//如果是教师记录用户登录信息并跳转个人中心,不是教师跳转申请讲师
     		if(!empty($t_id)){
-    			session(['user'=>['user_id'=>$t_id,'user_name'=>$user->user_name]]);
+    			session(['user'=>['user_id'=>$user['user_id'],'user_name'=>$user->user_name]]);
     			$this->response('登录成功',1,6);
     		}else{
     			$this->response('你还不是讲师,请先申请',3,$user->user_id);

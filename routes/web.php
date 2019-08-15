@@ -137,3 +137,11 @@ Route::get('/login/login','Login\LoginController@login');
 Route::post('/login/doLogin','Login\LoginController@doLogin');
 //登出处理
 Route::get('/login/quitLogin','Login\LoginController@quitLogin');
+
+
+
+//直播模块
+Route::group(['/'],function (){
+    Route::get('live_curr','curr\LiveCurrController@live_curr');
+    Route::post('start_live','curr\LiveCurrController@start_live');
+});

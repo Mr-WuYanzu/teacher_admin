@@ -32,7 +32,11 @@ class CurrController extends CommonController
     //课程添加执行
     public function currAdd(Request $request){
         //接收课程数据
-        $teacher_id = 2;
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录0'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $curr_name = $request->post('curr_name');  //课程名称
         $curr_cate_id = $request->post('curr_cate_id');   //课程分类
         $is_pay = $request->post('is_pay');     //课程收费状态 1 免费 2收费
@@ -103,7 +107,12 @@ class CurrController extends CommonController
 
     //章节添加页面
     public function chapter(){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return redirect('/login/login');
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         //查询出当前所有的课程
         $currInfo = Curr::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->get();
         return view('curr.chapter',['currInfo'=>$currInfo]);
@@ -111,7 +120,12 @@ class CurrController extends CommonController
 
     //课程的章节添加
     public function chapterAdd(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录0'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $curr_id = $request->post('curr_id');//课程id
         $chapter_name = $request->post('chapter_name');//章节名称
         $chapter_desc = $request->post('chapter_desc');//章节介绍
@@ -144,7 +158,12 @@ class CurrController extends CommonController
 
     //获取课程章节号
     public function chapterNum(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录0'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $curr_id = $request->post('curr_id');
         if(empty($curr_id)){
             return ['status'=>110,'msg'=>'请选择课程'];
@@ -160,7 +179,12 @@ class CurrController extends CommonController
 
     //获取课程的章节内容
     public function getChapter(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录0'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $curr_id = $request->post('curr_id');
         if(empty($curr_id)){
             return ['status'=>108,'msg'=>'请选择课程'];
@@ -181,14 +205,24 @@ class CurrController extends CommonController
 
     //课时添加页面
     public function classHour(){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return redirect('/login/login');
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $currInfo = Curr::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->get();
         return view('curr.classhour',['currInfo'=>$currInfo]);
     }
 
     //获取章节的课时号
     public function classHourNum(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $curr_id = $request->post('curr_id');
         if(empty($curr_id)){
             return ['status'=>107,'msg'=>'请选择课程'];
@@ -214,7 +248,12 @@ class CurrController extends CommonController
 
     //课程的课时添加执行
     public function classHourAdd(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $chapter_id = $request->post('chapter_id');
         $class_hour_name = $request->post('class_hour_name');
         $curr_id = $request->post('curr_id');
@@ -262,7 +301,12 @@ class CurrController extends CommonController
     }
     //课程列表
     public function currList(){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return redirect('/login/login');
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         //根据讲师id查找课程
         $data=[];
         $currInfo = Curr::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->get();
@@ -275,7 +319,12 @@ class CurrController extends CommonController
 
     //课程完结
     public function currEnd(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $curr_id = intval($request->post('curr_id'));
         if(empty($curr_id)){
             return ['status'=>108,'msg'=>'请选择课程'];
@@ -296,7 +345,12 @@ class CurrController extends CommonController
 
     //课程上架
     public function currUp(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $curr_id = intval($request->post('curr_id'));
         if(empty($curr_id)){
             return ['status'=>108,'msg'=>'请选择课程'];
@@ -317,7 +371,12 @@ class CurrController extends CommonController
 
     //课程下架
     public function currDown(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $curr_id = intval($request->post('curr_id'));
         if(empty($curr_id)){
             return ['status'=>108,'msg'=>'请选择课程'];
@@ -338,7 +397,12 @@ class CurrController extends CommonController
 
     //课程删除
     public function currDel(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $curr_id = intval($request->post('curr_id'));
         if(empty($curr_id)){
             return ['status'=>108,'msg'=>'请选择课程'];
@@ -419,7 +483,12 @@ class CurrController extends CommonController
     //课程视频上传
     public function currvideo(){
         //查询所有为录播的课程
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $currInfo = CurrModel::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->get();
         return view('curr.curr_video',['currInfo'=>$currInfo]);
     }
@@ -458,7 +527,12 @@ class CurrController extends CommonController
 
     //课程视频连接添加至数据库’
     public function videoAdd(Request $request){
-        $teacher_id = 2;
+        //接收课程数据
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录0'];
+        }
+        $teacher_id = $teacherInfo['data']['t_id'];
         $chapter_id = $request->post('chapter_id');
         $class_id = $request->post('class_id');
         $curr_id = $request->post('curr_id');
@@ -500,4 +574,6 @@ class CurrController extends CommonController
             return ['status'=>123,'msg'=>'添加失败，请重试'];
         }
     }
+
+
 }

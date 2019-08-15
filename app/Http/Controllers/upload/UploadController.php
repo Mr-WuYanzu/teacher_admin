@@ -24,10 +24,7 @@ class UploadController extends Controller
             if ($request->hasFile('file') && $request->file('file')->isValid()) {
                 $photo = $request->file('file');
                 $extension = $photo->extension();
-                $path = 'currimg/'.date('Y-m-d');
-                if(!is_dir($path)){
-                    mkdir($path,0777,true);
-                }
+                $path = 'currimg/'.date('Y-m-d').'/';
                 $store_result = $photo->store($path);
                 $output = [
                     'status'=>1000,
@@ -104,7 +101,7 @@ class UploadController extends Controller
 //                        dd(Storage::deleteDirectory('app/curr'));
 //                        dd(rmdir($this->config['savePath']));
 //                        Storage::deleteDirectory($this->config['savePath']);
-                        return ['name'=>$fileName,'size'=>$size,'path'=>'/app/upload/','fileName'=>$newname];
+                        return ['name'=>$fileName,'size'=>$size,'path'=>'upload/','fileName'=>$newname];
                     }
                 }
             }else{
