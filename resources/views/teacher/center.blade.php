@@ -34,5 +34,4 @@
     	</td>
     </tr>
 </table>
-
 @endsection

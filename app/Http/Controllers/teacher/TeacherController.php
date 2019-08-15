@@ -128,7 +128,7 @@ class TeacherController extends Controller
     public function center(Request $request)
     {
         //接收讲师id
-        $t_id=session('user_id');
+        $t_id=session('user.user_id');
         //实例化模型类
         $teacherModel=new Teacher();
         //查询讲师信息

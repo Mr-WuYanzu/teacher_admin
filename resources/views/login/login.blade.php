@@ -61,6 +61,13 @@
 				</label>
 				<input placeholder="Password" name="pwd" id="pwd" type="password" required="">
 			</div>
+			<div class="form-style-agile">
+				<label>
+					<i class="fas fa-unlock-alt"></i>
+					captcha
+				</label>
+				<div id="captcha"></div>
+			</div>
 			<!-- checkbox -->
 			<div class="wthree-text">
 				<ul>
@@ -95,11 +102,24 @@
 	<script src="{{asset('js/canva_moving_effect.js')}}"></script>
 	<!-- //effect js -->
 	<script src="{{asset('layui/layui.js')}}"></script>
+	<script src="https://cdn.dingxiang-inc.com/ctu-group/captcha-ui/index.js"></script>
 
 	<script type="text/javascript">
 		$(function(){
 			layui.use(['layer'],function(){
 				var layer=layui.layer;
+				var _token='';
+
+				var myCaptcha = _dx.Captcha(document.getElementById('captcha'), {
+		            appId: '32bd9936974b7a6949e648464efca3da', //appId，在控制台中“应用管理”或“应用配置”模块获取
+		            style:'inline',
+		            // language:'en',
+		            width:300,
+		            success: function (token) {
+		              _token=token;
+		              // console.log('token:', token)
+		            }
+		        });
 
 				$('#sub').click(function(){
 					var obj={};
@@ -116,10 +136,15 @@
 						return false;
 					}
 
+					if(_token==''){
+						layer.msg('请先验证',{icon:5,time:1000});
+						return false;
+					}
+
 					$.post(
 						'doLogin',
 						{data:obj},
-						function(res){		
+						function(res){	
 							layer.msg(res.font,{icon:res.skin,time:1000},function(){
 								if(res.code==1){
 									location.href='/teacher/center';

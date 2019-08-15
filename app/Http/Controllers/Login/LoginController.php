@@ -119,7 +119,9 @@ class LoginController extends Controller
      */
     public function quitLogin(Request $request)
     {
+    	//清除用户session信息
     	$request->session()->forget('user');
+    	//跳转登录
     	return redirect('/login/login');
     }
 
