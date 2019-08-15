@@ -50,13 +50,11 @@ Route::get('/teacher_admin',function(){
 //用户申请成为讲师页面
 Route::get('/apply','Teacher\TeacherController@apply');
 
-
-
-
-
 //用户申请成为讲师页面
 Route::get('/apply/{user_id?}','teacher\TeacherController@apply');
 
+//用户头像上传
+Route::post('/header_img','Teacher\TeacherController@headerImg');
 //申请讲师执行
 Route::post('/applyDo','Teacher\TeacherController@applyDo');
 //课程添加
@@ -67,18 +65,31 @@ Route::post('/currAdd','Curr\CurrController@currAdd')->middleware('login');
 Route::post('/curr/checkCurrName','Curr\CurrController@checkCurrName')->middleware('login');
 //章节添加
 Route::get('/chapter','Curr\CurrController@chapter')->middleware('login');
+Route::get('/chapter','Curr\CurrController@chapter');
+//课程图片上传
+Route::post('/uploadImg','upload\UploadController@uploadImg');
 //章节添加执行
 Route::post('/chapterAdd','Curr\CurrController@chapterAdd')->middleware('login');
 //课程的章节号
 Route::post('/chapterNum','Curr\CurrController@chapterNum')->middleware('login');
 //课时添加
 Route::get('/classHour','Curr\CurrController@classHour')->middleware('login');
+Route::post('/classHour','Curr\CurrController@classHour');
 //课时添加执行
 Route::post('/classHourAdd','Curr\CurrController@classHourAdd')->middleware('login');
 //文件上传
 Route::post('/upload','upload\UploadController@upload')->middleware('login');
 //章节的课时号
 Route::post('/classHourNum','Curr\CurrController@classHourNum')->middleware('login');
+Route::post('/classHourNum','Curr\CurrController@classHourNum');
+//视频上传
+Route::get('/currvideo','Curr\CurrController@currvideo');
+//视频上传执行
+Route::post('/videoUpload','Curr\CurrController@videoUpload');
+//获取课时
+Route::post('/getClassHour','Curr\CurrController@getClassHour');
+//视频上传成功添加至课时表等待审核
+Route::post('/videoAdd','Curr\CurrController@videoAdd');
 
 
 

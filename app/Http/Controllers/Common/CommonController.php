@@ -12,7 +12,13 @@ use App\Http\Controllers\Controller;
  */
 class CommonController extends Controller
 {
-	/**
+
+    public function __construct()
+    {
+
+    }
+
+    /**
 	 * [跳转页面]
 	 * @param  [type] $msg [description]
 	 * @param  [type] $url [description]

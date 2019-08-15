@@ -7,6 +7,9 @@ use App\curr\ClassHour;
 use App\curr\Curr;
 use App\curr\CurrCate;
 use App\Http\Controllers\upload\UploadController;
+use App\Http\Controllers\upload\UploadedController;
+use App\Model\CurrClassHourModel;
+use App\Model\CurrModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Common\CommonController;
 /**
@@ -30,18 +33,29 @@ class CurrController extends CommonController
     public function currAdd(Request $request){
         //接收课程数据
         $teacher_id = 2;
-        $curr_name = $request->post('curr_name');
-        $curr_cate_id = $request->post('curr_cate_id');
-        $is_pay = $request->post('is_pay');
-        $curr_detail = $request->post('curr_detail');
+        $curr_name = $request->post('curr_name');  //课程名称
+        $curr_cate_id = $request->post('curr_cate_id');   //课程分类
+        $is_pay = $request->post('is_pay');     //课程收费状态 1 免费 2收费
+        $img_url = $request->post('img_url');  //课程图片路径
+        $curr_detail = $request->post('curr_detail');  //课程介绍
+        $curr_type = $request->post('curr_type');  //课程类型  1 直播 2 录播
+         $curr_status = 2; //课程审核状态
         //验证非空
-        if(empty($curr_name) || empty($curr_cate_id) || empty($is_pay) || empty($curr_detail)){
+        if(empty($curr_name) || empty($curr_cate_id) || empty($is_pay) || empty($curr_detail) || empty($curr_type)){
             return ['status'=>104,'msg'=>'缺少参数'];
+        }
+        if(empty($img_url)){
+            return ['status'=>105,'msg'=>'请上传课程图片'];
         }
         //验证分类id是否正确
         $cate_result = CurrCate::where('curr_cate_id',$curr_cate_id)->first();
         if(empty($cate_result)){
             return ['status'=>105,'msg'=>'请选择正确的分类'];
+        }
+        //查询此分类下有没有此名称的课程
+        $result = CurrModel::where(['curr_cate_id'=>$curr_cate_id,'curr_name'=>$curr_name])->first();
+        if($result){
+            return ['status'=>106,'msg'=>'课程名称重复，请重新输入'];
         }
         //判断是否是付费课程，拼接数据
         if($is_pay==2){
@@ -58,6 +72,8 @@ class CurrController extends CommonController
                 'curr_hot'=>1,
                 'curr_price'=>$price,
                 'create_time'=>time(),
+                'curr_type'=>$curr_type,
+                'curr_status'=>$curr_status,
                 'is_show'=>1
             ];
         }else{
@@ -69,63 +85,27 @@ class CurrController extends CommonController
                 'curr_detail'=>$curr_detail,
                 'curr_hot'=>1,
                 'create_time'=>time(),
+                'curr_type'=>$curr_type,
+                'curr_status'=>$curr_status,
                 'is_show'=>1
             ];
         }
-        //检测是否有课程图片
-        if($request->hasFile('curr_img')){
-            $data['curr_img']=$this->uploadImg($request->curr_img);
-            if($data['curr_img']==2){
-                $this->abort('上传课程图片失败','/curr');return;
-            }
-        }else{
-            $this->abort('请上传课程图片','/curr');return;
-        }
+
         //添加入库
         $result = Curr::insert($data);
         if($result){
-            // return ['status'=>200,'msg'=>'添加成功'];
-            $this->abort('添加成功','/currList');
+             return ['status'=>200,'msg'=>'添加成功'];
         }else{
-            // return ['status'=>106,'msg'=>'添加失败'];
-            $this->abort('添加成功','/curr');
+             return ['status'=>106,'msg'=>'添加失败'];
         }
 
-    }
-
-    /**
-     * [上传课程图片]
-     * @param  [type] $curr_img [description]
-     * @return [type]           [description]
-     */
-    public function uploadImg($curr_img)
-    {
-        //检测文件上传过程中是否出错
-        if($curr_img->isValid()){
-            //获取文件路径
-            $path=$curr_img->path();
-            //获取文件扩展名
-            $extension=$curr_img->getClientOriginalExtension();
-            //拼接文件随机名称
-            $fileName=md5(time().rand(1000,9999)).'.'.$extension;
-            //拼接存放文件夹名称
-            $dirName='curr/'.date('Ymd');
-            //上传临时文件
-            $result=$curr_img->storeAs($dirName,$fileName);
-            //上传成功返回路径,失败返回提示
-            if(!empty($result)){
-                return $result;
-            }else{
-                return 2;
-            }
-        }
     }
 
     //章节添加页面
     public function chapter(){
         $teacher_id = 2;
         //查询出当前所有的课程
-        $currInfo = Curr::where(['t_id'=>$teacher_id,'status'=>1])->get();
+        $currInfo = Curr::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->get();
         return view('curr.chapter',['currInfo'=>$currInfo]);
     }
 
@@ -136,7 +116,7 @@ class CurrController extends CommonController
         $chapter_name = $request->post('chapter_name');//章节名称
         $chapter_desc = $request->post('chapter_desc');//章节介绍
         //验证课程id
-        $currInfo = Curr::where(['t_id'=>$teacher_id,'curr_id'=>$curr_id])->first();
+        $currInfo = Curr::where(['t_id'=>$teacher_id,'curr_id'=>$curr_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->first();
         if(empty($currInfo)){
             return ['status'=>112,'msg'=>'课程不存在'];
         }
@@ -186,7 +166,7 @@ class CurrController extends CommonController
             return ['status'=>108,'msg'=>'请选择课程'];
         }
         //查询课程信息
-        $currInfo = Curr::where(['t_id'=>$teacher_id,'curr_id'=>$curr_id])->first();
+        $currInfo = Curr::where(['t_id'=>$teacher_id,'curr_id'=>$curr_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->first();
         if(!$currInfo){
             return ['status'=>109,'msg'=>'课程不存在'];
         }
@@ -202,7 +182,7 @@ class CurrController extends CommonController
     //课时添加页面
     public function classHour(){
         $teacher_id = 2;
-        $currInfo = Curr::where(['t_id'=>$teacher_id])->get();
+        $currInfo = Curr::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->get();
         return view('curr.classhour',['currInfo'=>$currInfo]);
     }
 
@@ -238,9 +218,6 @@ class CurrController extends CommonController
         $chapter_id = $request->post('chapter_id');
         $class_hour_name = $request->post('class_hour_name');
         $curr_id = $request->post('curr_id');
-        $video_url = $request->post('video_url');
-        $live_url = $request->post('live_url');
-        $class_type = $request->post('class_type');
         if(empty($curr_id)){
             return ['status'=>102,'msg'=>'请选择课程'];
         }
@@ -255,20 +232,8 @@ class CurrController extends CommonController
             'class_name'=>$class_hour_name,
             'chapter_id'=>$chapter_id,
             'curr_id'=>$curr_id,
-            'class_type'=>$class_type,
             'create_time'=>time()
         ];
-        if($class_type==1){
-            if(empty($live_url)){
-                return ['status'=>105,'msg'=>'请填写您的直播地址'];
-            }
-            $data['class_data']=$live_url;
-        }else if($class_type==2){
-            if(empty($video_url)){
-                return ['status'=>105,'msg'=>'请填写您的直播地址'];
-            }
-            $data['class_data']=$video_url;
-        }
         //验证课程存在不存在
         $currResult = Curr::where(['t_id'=>$teacher_id,'curr_id'=>$curr_id])->first();
         if(!$currResult){
@@ -300,7 +265,7 @@ class CurrController extends CommonController
         $teacher_id = 2;
         //根据讲师id查找课程
         $data=[];
-        $currInfo = Curr::where('t_id',$teacher_id)->get();
+        $currInfo = Curr::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->get();
         foreach ($currInfo as $k=>$v){
             $data[$k]=$v;
             $data[$k]['cate_name']=CurrCate::where(['status'=>1,'curr_cate_id'=>$v['curr_cate_id']])->value('cate_name');
@@ -416,7 +381,7 @@ class CurrController extends CommonController
         $size = $_POST['size']; //文件总大小6
         $currentChunk = $_POST['currentChunk'];//当前文件段数
         $chunks = $_POST['chunks']; //总段数
-        $upload = new UploadController();
+        $upload = new UploadedController();
         $res = $upload->upload($fileName,$size,$currentChunk,$chunks,$fileInfo);
         if(!$res){
             return ['status'=>124,'msg'=>$upload->uploadError()];
@@ -449,4 +414,90 @@ class CurrController extends CommonController
         }
     }
 
+
+
+    //课程视频上传
+    public function currvideo(){
+        //查询所有为录播的课程
+        $teacher_id = 2;
+        $currInfo = CurrModel::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->get();
+        return view('curr.curr_video',['currInfo'=>$currInfo]);
+    }
+    
+    //获取课时
+    public function getClassHour(Request $request){
+        $chapter_id = $request->post('chapter_id');
+        $curr_id = $request->post('curr_id');
+        //根据此章节id查询课时
+        $ClassInfo = CurrClassHourModel::where(['chapter_id'=>$chapter_id])->get();
+        return ['status'=>200,'data'=>$ClassInfo];
+    }
+
+    //视频文件上传执行
+    public function videoUpload(){
+        $file = $_FILES['file']??null;
+        if(empty($file)){
+            return ['status'=>108,'msg'=>'请选择文件上传'];
+        }
+        $fileName = $_POST['name']; //文件名
+        $size = $_POST['size']; //文件总大小
+        $currentChunk = $_POST['currentChunk']??1;//当前文件段数
+        $chunks = $_POST['chunks']; //总段数
+        $fileInfo = base64_encode(file_get_contents($file['tmp_name']));
+        $upload = new UploadController();
+        $res = $upload->upload($fileName,$size,$currentChunk,$chunks,$fileInfo);
+        if(!$res){
+            return ['status'=>'20001','msg'=>'upload faild',$upload->uploadError()];
+        }else{
+            if(isset($res['currentChunk'])){
+                return ['status'=>'201','msg'=>'ok',$res];
+            }
+            return ['status'=>'200','msg'=>'ok',$res];
+        }
+    }
+
+    //课程视频连接添加至数据库’
+    public function videoAdd(Request $request){
+        $teacher_id = 2;
+        $chapter_id = $request->post('chapter_id');
+        $class_id = $request->post('class_id');
+        $curr_id = $request->post('curr_id');
+        $video_url = $request->post('video_url');
+        if(empty($curr_id)){
+            return ['status'=>102,'msg'=>'请选择课程'];
+        }
+        if(empty($chapter_id)){
+            return ['status'=>102,'msg'=>'请选择章节'];
+        }
+        if(empty($class_id)){
+            return ['status'=>102,'msg'=>'请选择课时'];
+        }
+        if(empty($video_url)){
+            return ['status'=>102,'msg'=>'请上传视频'];
+        }
+
+        //验证课程存在不存在
+        $currResult = CurrModel::where(['t_id'=>$teacher_id,'curr_id'=>$curr_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->first();
+        if(!$currResult){
+            return ['status'=>120,'msg'=>'课程不存在'];
+        }
+        //验证章节
+        $chapterInfo = Chapter::where(['curr_id'=>$curr_id,'chapter_id'=>$chapter_id])->first();
+        if(!$chapterInfo){
+            return ['status'=>121,'msg'=>'该课程下没有此章节'];
+        }
+        //验证课时是否存在
+        $className = ClassHour::where(['chapter_id'=>$chapter_id,'class_id'=>$class_id])->first();
+        if(!$className){
+            return ['status'=>122,'msg'=>'课时不存在'];
+        }
+        //验证没问题，入库
+        $result = ClassHour::where(['class_id'=>$className['class_id']])->update(['class_data'=>$video_url]);
+        if($result){
+            Chapter::where(['chapter_id'=>$chapter_id])->update(['class_num'=>$chapterInfo['class_num']+1]);
+            return ['status'=>200,'msg'=>'添加成功'];
+        }else{
+            return ['status'=>123,'msg'=>'添加失败，请重试'];
+        }
+    }
 }

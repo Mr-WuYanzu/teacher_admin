@@ -48,7 +48,7 @@
             <div class="layui-side-scroll">
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-                    <li class="layui-nav-item layui-nav-itemed">
+                    <li class="layui-nav-item">
                         <a class="" href="javascript:;">讲师管理</a>
                         <dl class="layui-nav-child">
                             @if(empty(session('user')))
@@ -66,6 +66,8 @@
                             <dd><a href="/currList">课程列表</a></dd>
                             <dd><a href="/chapter">章节添加</a></dd>
                             <dd><a href="/classHour">课时添加</a></dd>
+                            <dd><a href="/currvideo">视频上传</a></dd>
+                            <dd><a href="">查看我的直播课程</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
