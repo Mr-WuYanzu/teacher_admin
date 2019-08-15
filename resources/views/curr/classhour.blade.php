@@ -21,39 +21,12 @@
                     <option value="">--请选择--</option>
                 </select>
             </p>
-        <input type="hidden" value="" id="video_url">
             <p>当前的课时：<span id="class_num"></span></p>
             <p>课时的名称：<input type="text" id="class_hour_name"></p>
-            <p>请选择课时类型：
-                <input type="radio" name="class_type" value="1" class="class_type">直播课程 
-                <input type="radio" name="class_type" value="2" class="class_type" checked>录播课程
-            </p>
-            <div id="upl">
-                    <form id="uploadForm" enctype="multipart/form-data">
-                        文件:<input id="file" type="file" name="file"/>
-                    </form>
-                    <button id="upload">上传文件</button>
-
-            </div>
             <button id="sub">提交</button>
 
         <script>
             $(function () {
-                $('.class_type').click(function () {
-                    var _val = $(this).val();
-                    if(_val==1){
-                        $('#upl').empty();
-                        var _div="<div>直播地址:<input type=\"text\" id=\"live_url\"/></div>";
-                        $('#upl').append(_div);
-                    }else if(_val==2){
-                        $('#upl').empty();
-                        var _div="<form id=\"uploadForm\" enctype=\"multipart/form-data\">\n" +
-                            "                        文件:<input id=\"file\" type=\"file\" name=\"file\"/>\n" +
-                            "                    </form>\n" +
-                            "                    <button id=\"upload\">上传文件</button><input type='hidden' id='video_url'>";
-                        $('#upl').append(_div);
-                    }
-                })
             //视频文件上传
                 $(document).on('click','#upload',function () {
                     var formData = new FormData($('#uploadForm')[0]);
@@ -139,38 +112,26 @@
                         var chapter_id = $('#chapt').val();
                         var class_hour_name = $('#class_hour_name').val();
                         var curr_id = $('#curr').val();
-                        var video_url = null;
-                        var live_url = null;
-                        var class_type=0;
-                        //获取用户课程类型
-                        var _type = $('.class_type');
-                        _type.each(function (index) {
-                            if($(this).prop('checked')==true){
-                                class_type=$(this).val();
-                                if(class_type==1){
-                                    live_url = $('#live_url').val();
-                                }else if(class_type==2){
-                                    video_url = $('#video_url').val();
-                                }
-                            }
 
-                        })
-                        if(video_url==null&&live_url==null){
-                            alert('请选择上传视频或者填写直播地址');
-                            return false;
-                        }
-                        $.ajax({
-                            url:'/classHourAdd',
-                            type:'post',
-                            data:{chapter_id:chapter_id,class_hour_name:class_hour_name,curr_id:curr_id,video_url:video_url,live_url:live_url,class_type:class_type},
-                            dataType:'json',
-                            success:function (index) {
-                                alert(index.msg);
-                                if(index.status==200){
-                                    history.go(0);
+                        layui.use('form', function(){
+                            var form = layui.form;
+                            $.ajax({
+                                url:'/classHourAdd',
+                                type:'post',
+                                data:{chapter_id:chapter_id,class_hour_name:class_hour_name,curr_id:curr_id},
+                                dataType:'json',
+                                success:function (res) {
+                                    if(res.status==200){
+                                        layer.msg(res.msg,{icon:1},function () {
+                                            history.go(0);
+                                        });
+                                    }else{
+                                        layer.msg(res.msg,{icon:5});
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        });
+
 
                     })
                 })
