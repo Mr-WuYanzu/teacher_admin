@@ -110,17 +110,19 @@
 				var layer=layui.layer;
 				var _token='';
 
+				//验证码配置
 				var myCaptcha = _dx.Captcha(document.getElementById('captcha'), {
 		            appId: '32bd9936974b7a6949e648464efca3da', //appId，在控制台中“应用管理”或“应用配置”模块获取
-		            style:'inline',
-		            // language:'en',
-		            width:300,
+		            style:'inline', //验证码样式
+		            // language:'en', //语言
+		            width:300, //宽度
 		            success: function (token) {
 		              _token=token;
 		              // console.log('token:', token)
 		            }
 		        });
 
+				//登录处理
 				$('#sub').click(function(){
 					var obj={};
 					obj.account=$('#account').val();
