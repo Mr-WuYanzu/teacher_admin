@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Common;
 
+use App\Model\TeacherModel;
+use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 /**
@@ -88,5 +90,26 @@ class CommonController extends Controller
     		}
     	}
     	return $arr;
+    }
+    public function teacherInfo(){
+        $user_id = session('user.user_id');
+        //根据用户ID查询讲师信息
+        $userInfo = UserModel::where(['user_id'=>$user_id])->first();
+        if($userInfo){
+            if($userInfo['status']==2){
+                return ['status'=>3,'msg'=>'您的账号已被锁定'];
+            }else{
+                $teacherInfo = TeacherModel::where(['user_id'=>$userInfo['user_id']])->first();
+                if($teacherInfo){
+                    return ['status'=>200,'msg'=>'ok','data'=>$teacherInfo];
+                }else{
+                    return ['status'=>4,'msg'=>'您还不是讲师不能访问'];
+                }
+            }
+        }else{
+                return ['status'=>2,'msg'=>'请登录'];
+        }
+
+
     }
 }

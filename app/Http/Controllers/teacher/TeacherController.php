@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Http\Controllers\Common\CommonController;
 use App\teacher\Teacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Model\UserModel;
 /**
  * 讲师模块类
  * class TeacherController
@@ -12,14 +14,22 @@ use App\Http\Controllers\Controller;
  * @package  App\Http\Controllers\Teacher
  * @date 2019-08-10
  */
-class TeacherController extends Controller
+class TeacherController extends CommonController
 {
     //用户申请成为讲师页面
     public function apply(Request $request){
+
         $type=1;
-        $user_id = 3;
+        //验证用户是否登录
+        $user_id = session('user.user_id');
+
         if(empty($user_id)){
-            echo '禁止访问，请登录';
+            return redirect('/login/login');
+        }
+        //根据用户ID查询讲师信息
+        $userInfo = UserModel::where(['user_id'=>$user_id,'status'=>1])->first();
+        if(!$userInfo){
+            return redirect('/login/login');
         }
         //查询此用户有没有申请过
         $where=[
@@ -39,6 +49,16 @@ class TeacherController extends Controller
 
     //用户头像上传
     public function headerImg(Request $request){
+        //验证用户是否登录
+        $user_id = session('user.user_id');
+        if(empty($user_id)){
+            return ['status'=>402,'msg'=>'请登陆后上传'];
+        }
+        //根据用户ID查询讲师信息
+        $userInfo = UserModel::where(['user_id'=>$user_id,'status'=>1])->first();
+        if(!$userInfo){
+            return ['status'=>402,'msg'=>'请登录后上传'];
+        }
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
             $photo = $request->file('file');
             $extension = $photo->extension();
@@ -46,7 +66,6 @@ class TeacherController extends Controller
             if(!is_dir($path)){
                 mkdir($path,0777,true);
             }
-
             $store_result = $photo->store($path);
             $output = [
                 'status'=>1000,
@@ -60,11 +79,25 @@ class TeacherController extends Controller
 
     //讲师申请执行
     public function applyDo(Request $request){
+        //验证用户是否登录
+        $user_id = session('user.user_id');
+        if(empty($user_id)){
+            return ['status'=>402,'msg'=>'请登陆后上传'];
+        }
+        //根据用户ID查询讲师信息
+        $userInfo = UserModel::where(['user_id'=>$user_id,'status'=>1])->first();
+        if(!$userInfo){
+            return ['status'=>402,'msg'=>'请登录'];
+        }
+        $teacherInfo = $this->teacherInfo();
+        if($teacherInfo['status']!=200){
+            return ['status'=>402,'msg'=>'请登录'];
+        }
+        $user_id = $teacherInfo['data']['user_id'];
         $teacher_name = $request->post('teacher_name');
         $teacher_desc = $request->post('teacher_desc');
         $teacher_direction = $request->post('teacher_direction');
         $header_img = $request->post('header_img');
-        $user_id = 3;
         if(empty($teacher_desc) || empty($teacher_name) || empty($teacher_direction)){
             return ['status'=>102,'msg'=>'缺失参数'];
         }
@@ -95,7 +128,7 @@ class TeacherController extends Controller
             'status'=>1,
             'user_id'=>$user_id,
             'teacher_direction'=>$teacher_direction,
-            'header_img'=>$teacher_direction,
+            'header_img'=>$header_img,
         ];
         $result = Teacher::insert($data);
         if($result){
@@ -127,12 +160,12 @@ class TeacherController extends Controller
      */
     public function center(Request $request)
     {
-        //接收讲师id
-        $t_id=session('user.user_id');
-        //实例化模型类
-        $teacherModel=new Teacher();
-        //查询讲师信息
-        $teacherInfo=$teacherModel->where('t_id',$t_id)->first();
+        $data = $this->teacherInfo();
+        if($data['status']!=200){
+            return redirect('/login/login');
+        }
+        $teacherInfo = $data['data'];
+
         //渲染视图
         return view('teacher/center',compact('teacherInfo'));
     }

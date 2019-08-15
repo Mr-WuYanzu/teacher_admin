@@ -47,14 +47,14 @@
         <td>{{date('Y-m-d H:i',$v['create_time'])}}</td>
         <td>
             @if($v['status']==2)
-                <button class="end">完结此课程</button>
+                <button class="layui-btn layui-btn-xs end">完结此课程</button>
             @endif
             @if($v['is_show']==2)
-                <button class="up">上架</button>
+                <button  class="layui-btn layui-btn-xs up">上架</button>
             @endif
-                <button class="down">下架</button>
-                <button class="del">删除</button>
-                <button class="upd">修改</button>
+                <button  class="layui-btn layui-btn-xs down">下架</button>
+                <button  class="layui-btn layui-btn-xs del">删除</button>
+                <button  class="layui-btn layui-btn-xs upd">修改</button>
         </td>
     </tr>
         @endforeach
@@ -97,7 +97,7 @@
                     if(res.status==200){
                         //将按钮变成下架改变class
                         _this.text('下架');
-                        _this.prop('class','down');
+                        _this.prop('class','layui-btn layui-btn-xs down');
                     }
                 }
             })
@@ -116,7 +116,7 @@
                     if(res.status==200){
                         //将按钮变成上架，改变class
                         _this.text('上架');
-                        _this.prop('class','up');
+                        _this.prop('class','layui-btn layui-btn-xs up');
                     }
                 }
             })

@@ -51,12 +51,12 @@
                     <li class="layui-nav-item">
                         <a class="" href="javascript:;">讲师管理</a>
                         <dl class="layui-nav-child">
-                            @if(empty(session('user')))
+
                             <dd><a href="/apply">申请成为讲师</a></dd>
-                            @else
+
                             <dd><a href="/teacher/center">个人中心</a></dd>
                             <dd><a href="/teacher/balance">查询余额</a></dd>
-                            @endif
+
                         </dl>
                     </li>
                     <li class="layui-nav-item">
@@ -67,7 +67,7 @@
                             <dd><a href="/chapter">章节添加</a></dd>
                             <dd><a href="/classHour">课时添加</a></dd>
                             <dd><a href="/currvideo">视频上传</a></dd>
-                            <dd><a href="">查看我的直播课程</a></dd>
+                            <dd><a href="/live_curr">查看我的直播课程</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">

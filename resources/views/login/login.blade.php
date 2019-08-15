@@ -27,6 +27,7 @@
 	<!-- web-fonts -->
 	<link href="http://maxcdn.bootstrapcdn.com/css?family=Josefin+Sans:100,100i,300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
 	<link href="http://maxcdn.bootstrapcdn.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+	<link href="/layui/css/layui.css" rel="stylesheet">
 	<!-- //web-fonts -->
 </head>
 
@@ -43,7 +44,6 @@
 	<!-- //title -->
 	<!-- content -->
 	<div class="sub-main-w3">
-		<form method="post">
 			<h2>Login Now
 				<i class="fas fa-level-down-alt"></i>
 			</h2>
@@ -83,8 +83,8 @@
 				</ul>
 			</div>
 			<!-- //checkbox -->
-			<input type="submit" id="sub" value="Log In">
-		</form>
+			<button id="sub" class="layui-btn">logIn</button>
+
 	</div>
 	<!-- //content -->
 
@@ -138,6 +138,7 @@
 						return false;
 					}
 
+
 					if(_token==''){
 						layer.msg('请先验证',{icon:5,time:1000});
 						return false;
@@ -147,16 +148,25 @@
 						'doLogin',
 						{data:obj},
 						function(res){	
+
+					$.ajax({
+						url:'/login/doLogin',
+						type:'post',
+						data:{data:obj},
+						dataType:'json',
+						success:function(res){
+
 							layer.msg(res.font,{icon:res.skin,time:1000},function(){
 								if(res.code==1){
 									location.href='/teacher/center';
 								}else if(res.code==3){
-									location.href='/apply/?user_id='+res.skin+'';
+									location.href='/apply';
 								}
 							});
 						},
-						'json'
-					)
+					})
+
+
 				});
 			});
 		});
