@@ -34,15 +34,15 @@
         <td>{{$v['curr_name']}}</td>
         <td>{{str_replace(mb_substr($v['curr_detail'],20,mb_strlen($v['curr_detail'])),'...',$v['curr_detail'])}}</td>
         <td>
-            @if($v['curr_name']==2)
+            @if($v['live_status']==2)
                 正在直播
             @else
                 还未开播
             @endif
         </td>
         <td>{{$v['cate_name']}}</td>
-        <td class="live_url"></td>
-        <td class="key"></td>
+        <td class="live_url">{{$v['live_url']??null}}</td>
+        <td class="key">{{$v['live_key']??null}}</td>
         <td>
             @if($v['is_pay']==1)
                 免费
@@ -52,7 +52,12 @@
         </td>
         <td>{{date('Y-m-d H:i',$v['create_time'])}}</td>
         <td>
-            <button class="layui-btn layui-btn-radius layui-btn-warm" id="start_live">我要直播</button>
+            @if($v['live_status']==2)
+                <button class="layui-btn layui-btn-radius layui-btn-warm" id="shutDown_live">点击下播</button>
+            @else
+                <button class="layui-btn layui-btn-radius layui-btn-warm" id="start_live">我要直播</button>
+            @endif
+
         </td>
     </tr>
         @endforeach
@@ -76,7 +81,21 @@
                         _key.text(res.key);
                     }
                 }
+            })
+        })
+        $(document).on('click','#shutDown_live',function () {
+            //获取当前点击课程id
+            var curr_id = $(this).parents('tr').attr('curr_id');
+            $.ajax({
+                url:'/shutDown_live',
+                type:'post',
+                data:{curr_id:curr_id},
+                dataType:'json',
+                success:function (res) {
+                    if(res.status==200){
 
+                    }
+                }
             })
         })
     })

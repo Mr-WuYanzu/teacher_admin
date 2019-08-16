@@ -144,4 +144,5 @@ Route::get('/login/quitLogin','Login\LoginController@quitLogin');
 Route::group(['/'],function (){
     Route::get('live_curr','curr\LiveCurrController@live_curr');
     Route::post('start_live','curr\LiveCurrController@start_live');
+    Route::post('shutDown_live','curr\LiveCurrController@shutDown_live');
 });

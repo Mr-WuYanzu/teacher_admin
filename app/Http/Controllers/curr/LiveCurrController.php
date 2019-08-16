@@ -23,8 +23,14 @@ class LiveCurrController extends CommonController
         //查找这个讲师的课程
         $currInfo = CurrModel::where(['t_id'=>$teacher_id,'is_show'=>1,'curr_status'=>1,'curr_type'=>1])->get();
         //分局课程分类id查找这个分类
+        $liveKey = md5($teacherInfo['t_name']);
         foreach ($currInfo as $k=>$v){
             $currInfo[$k]['cate_name'] = CurrCate::where(['curr_cate_id'=>$v['curr_cate_id']])->value('cate_name');
+            $liveInfo = LiveModel::where(['curr_id'=>$v['curr_id']])->first();
+            if($liveInfo){
+                $currInfo[$k]['live_url']=$liveInfo['curr_live_url'];
+                $currInfo[$k]['live_key']=$liveKey;
+            }
         }
         return view('curr.live_curr',['data'=>$currInfo]);
     }
@@ -43,7 +49,8 @@ class LiveCurrController extends CommonController
         //讲师id
         $teacher_id = $teacherInfo['t_id'];
         //查找此讲师是否有此课程
-        $currInfo = CurrModel::where(['curr_id'=>$curr_id,'t_id'=>$teacher_id,'is_show'=>1,'curr_status'=>1,'curr_type'=>1])->first();
+        $currInfo = CurrModel::where([
+            'curr_id'=>$curr_id,'t_id'=>$teacher_id,'is_show'=>1,'curr_status'=>1,'curr_type'=>1])->first();
         if(empty($currInfo)){
             return ['status'=>103,'msg'=>'请选择正确的课程'];
         }
@@ -51,8 +58,9 @@ class LiveCurrController extends CommonController
         $key = $this->_create_key(['curr_id'=>$curr_id,'t_id'=>$teacher_id]);
         //查询数据库有没有此用户开播此课程的秘钥
         $keyInfo = LiveModel::where(['curr_id'=>$curr_id,['key_expire','>',time()]])->first();
+        $live_url = 'rtmp://192.168.136.131:1935/cctvf?key='.$key;
         if($keyInfo){
-            $result = LiveModel::where(['live_id'=>$keyInfo['live_id']])->update(['live_key'=>$key,'key_expire'=>time()+60*60*24]);
+            $result = LiveModel::where(['live_id'=>$keyInfo['live_id']])->update(['live_key'=>$key,'key_expire'=>time()+60*60*24,'live_url'=>$live_url]);
             if($result){
                 return ['status'=>200,'live_url'=>'rtmp://192.168.136.131:1935/cctvf?key='.$key,'key' => md5($teacherInfo['t_name'])];
             }else{
@@ -63,7 +71,8 @@ class LiveCurrController extends CommonController
             $data = [
                 'live_key'=>$key,
                 'key_expire'=>time()+60*60*24,
-                'curr_id'=>$curr_id
+                'curr_id'=>$curr_id,
+                'live_url'=>$live_url
             ];
             $result = LiveModel::insert($data);
             if($result){
@@ -73,6 +82,15 @@ class LiveCurrController extends CommonController
             }
         }
     }
+
+    //用户下播
+    public function shutDown_live(Request $request){
+        $curr_id = $request->post('curr_id');
+        if(empty($curr_id)){
+            return ['status'=>108,];
+        }
+    }
+
     //生成key
     private function _create_key($data){
         $key = 'akakakalsldslety';

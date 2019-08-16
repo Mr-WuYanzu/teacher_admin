@@ -105,62 +105,58 @@
 	<script src="https://cdn.dingxiang-inc.com/ctu-group/captcha-ui/index.js"></script>
 
 	<script type="text/javascript">
-		$(function(){
-			layui.use(['layer'],function(){
-				var layer=layui.layer;
-				var _token='';
+		$(function() {
+			layui.use(['layer'], function () {
+				var layer = layui.layer;
+				var _token = '';
 
 				//验证码配置
 				var myCaptcha = _dx.Captcha(document.getElementById('captcha'), {
-		            appId: '32bd9936974b7a6949e648464efca3da', //appId，在控制台中“应用管理”或“应用配置”模块获取
-		            style:'inline', //验证码样式
-		            // language:'en', //语言
-		            width:300, //宽度
-		            success: function (token) {
-		              _token=token;
-		              // console.log('token:', token)
-		            }
-		        });
+					appId: '32bd9936974b7a6949e648464efca3da', //appId，在控制台中“应用管理”或“应用配置”模块获取
+					style: 'inline', //验证码样式
+					// language:'en', //语言
+					width: 300, //宽度
+					success: function (token) {
+						_token = token;
+						// console.log('token:', token)
+					}
+				});
 
 				//登录处理
-				$('#sub').click(function(){
-					var obj={};
-					obj.account=$('#account').val();
-					obj.pwd=$('#pwd').val();
+				$('#sub').click(function () {
+					var obj = {};
+					obj.account = $('#account').val();
+					obj.pwd = $('#pwd').val();
 
-					if(obj.account==''){
-						layer.msg('账号必填',{icon:5,time:1000});
+					if (obj.account == '') {
+						layer.msg('账号必填', {icon: 5, time: 1000});
 						return false;
 					}
 
-					if(obj.pwd==''){
-						layer.msg('密码必填',{icon:5,time:1000});
+					if (obj.pwd == '') {
+						layer.msg('密码必填', {icon: 5, time: 1000});
 						return false;
 					}
 
 
-					if(_token==''){
-						layer.msg('请先验证',{icon:5,time:1000});
+					if (_token == '') {
+						layer.msg('请先验证', {icon: 5, time: 1000});
 						return false;
 					}
 
-					$.post(
-						'doLogin',
-						{data:obj},
-						function(res){	
 
 					$.ajax({
-						url:'/login/doLogin',
-						type:'post',
-						data:{data:obj},
-						dataType:'json',
-						success:function(res){
+						url: '/login/doLogin',
+						type: 'post',
+						data: {data: obj},
+						dataType: 'json',
+						success: function (res) {
 
-							layer.msg(res.font,{icon:res.skin,time:1000},function(){
-								if(res.code==1){
-									location.href='/teacher/center';
-								}else if(res.code==3){
-									location.href='/apply';
+							layer.msg(res.font, {icon: res.skin, time: 1000}, function () {
+								if (res.code == 1) {
+									location.href = '/teacher/center';
+								} else if (res.code == 3) {
+									location.href = '/apply';
 								}
 							});
 						},
