@@ -309,7 +309,7 @@ class CurrController extends CommonController
         $teacher_id = $teacherInfo['data']['t_id'];
         //根据讲师id查找课程
         $data=[];
-        $currInfo = Curr::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1,'curr_type'=>2])->get();
+        $currInfo = Curr::where(['t_id'=>$teacher_id,'status'=>2,'curr_status'=>1])->get();
         foreach ($currInfo as $k=>$v){
             $data[$k]=$v;
             $data[$k]['cate_name']=CurrCate::where(['status'=>1,'curr_cate_id'=>$v['curr_cate_id']])->value('cate_name');
@@ -575,5 +575,77 @@ class CurrController extends CommonController
         }
     }
 
+    //课程编辑页面
+    public function curr_edit($curr_id){
+        $data = $this->teacherInfo();
+        if($data['status']!=200){
+            return redirect('/login/login');
+        }
+        //讲师信息
+        $teacherInfo = $data['data'];
+        //根据课程id查询此课程信息
+        $where=[
+            'curr_id'=>intval($curr_id),
+            't_id'=>$teacherInfo['t_id']
+        ];
+        $currInfo = CurrModel::where($where)->first();
+        if(empty($currInfo)){
+            return ['status'=>108,'msg'=>'请选择正确的课程'];
+        }
+        return view('curr.curr_edit',['currInfo'=>$currInfo]);
+    }
+
+    //课程修改执行
+    public function curr_update(Request $request){
+        $curr_id = intval($request->post('curr_id'));
+        if(empty($curr_id)){
+            return ['status'=>107,'msg'=>'请修改正确的课程'];
+        }
+        $curr_name = $request->post('curr_name');
+        $is_pay = intval($request->post('is_pay'));
+        $curr_detail = $request->post('curr_detail');
+        $curr_price = $request->post('curr_price');
+        $curr_img = $request->post('img_url');
+        if(empty($curr_name) || empty($is_pay) || empty($curr_detail) || empty($curr_img)){
+            return ['status'=>107,'msg'=>'不可以有参数为空哦'];
+        }
+
+        #验证课程名称的唯一性
+        $checkCurrName = CurrModel::where([['curr_id','<>',$curr_id],'curr_name'=>$curr_name])->first();
+        if(!empty($checkCurrName)){
+            return ['status'=>107,'msg'=>'此课程名称已经有人使用了哦'];
+        }
+        #课程修改的数据
+        $curr_data=[
+            'curr_name'=>$curr_name,
+            'is_pay'=>$is_pay,
+            'curr_img'=>$curr_img,
+            'curr_detail'=>$curr_detail,
+        ];
+        if($is_pay == 2 && empty($curr_price)){
+            $curr_data['curr_price']=$curr_price;
+            return ['status'=>107,'msg'=>'请填写价格'];
+        }
+
+        //获取讲师信息
+        $data = $this->teacherInfo();
+        if($data['status']!=200){
+            return redirect('/login/login');
+        }
+        //讲师信息
+        $teacherInfo = $data['data'];
+        #课程修改的条件
+        $where=[
+            'curr_id'=>intval($curr_id),
+            't_id'=>$teacherInfo['t_id']
+        ];
+        #执行课程修改
+        $curr_update_result = CurrModel::where($where)->update($curr_data);
+        if($curr_update_result!==false){
+            return ['status'=>200,'msg'=>'修改成功'];
+        }else{
+            return ['status'=>107,'msg'=>'修改失败，请稍后重试'];
+        }
+    }
 
 }

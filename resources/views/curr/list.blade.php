@@ -1,6 +1,6 @@
 @extends('layout.layouts')
 
-@section('title', '讲师资格申请')
+@section('title', '课程列表')
 
 @section('sidebar')
     @parent
@@ -54,7 +54,7 @@
             @endif
                 <button  class="layui-btn layui-btn-xs down">下架</button>
                 <button  class="layui-btn layui-btn-xs del">删除</button>
-                <button  class="layui-btn layui-btn-xs upd">修改</button>
+                <a href="/curr_edit/{{$v['curr_id']}}"><button  class="layui-btn layui-btn-xs upd">修改</button></a>
         </td>
     </tr>
         @endforeach
@@ -62,6 +62,14 @@
 </table>
 <script>
     $(function () {
+        layui.use(['form','layer'], function(){
+            var form = layui.form;
+            var layer = layui.layer;
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
         //点击完结
         $(document).on('click','.end',function () {
             var curr_id = $(this).parents('tr').attr('curr_id');
@@ -73,12 +81,14 @@
                 data:{curr_id:curr_id},
                 dataType:'json',
                 success:function (res) {
-                    alert(res.msg);
                     if(res.status==200){
+                        layer.msg(res.msg,{icon:1});
                         //将完结按钮去掉
                         _this.remove();
                         //将课程状态设为完结
                         _status.text('完结');
+                    }else{
+                        layer.msg(res.msg,{icon:5});
                     }
                 }
             })
@@ -93,11 +103,13 @@
                 data:{curr_id:curr_id},
                 dataType:'json',
                 success:function (res) {
-                    alert(res.msg);
                     if(res.status==200){
+                        layer.msg(res.msg,{icon:1});
                         //将按钮变成下架改变class
                         _this.text('下架');
                         _this.prop('class','layui-btn layui-btn-xs down');
+                    }else{
+                        layer.msg(res.msg,{icon:5});
                     }
                 }
             })
@@ -112,11 +124,13 @@
                 data:{curr_id:curr_id},
                 dataType:'json',
                 success:function (res) {
-                    alert(res.msg);
                     if(res.status==200){
+                        layer.msg(res.msg,{icon:1});
                         //将按钮变成上架，改变class
                         _this.text('上架');
                         _this.prop('class','layui-btn layui-btn-xs up');
+                    }else{
+                        layer.msg(res.msg,{icon:5});
                     }
                 }
             })
@@ -132,14 +146,17 @@
                 data:{curr_id:curr_id},
                 dataType:'json',
                 success:function (res) {
-                    alert(res.msg);
                     if(res.status==200){
+                        layer.msg(res.msg,{icon:1});
                         // 将这条数据行删掉
                         _this.parents('tr').remove();
+                    }else{
+                        layer.msg(res.msg,{icon:5});
                     }
                 }
             })
         })
     })
+    });
 </script>
 @endsection

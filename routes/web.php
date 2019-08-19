@@ -66,6 +66,10 @@ Route::post('/curr/checkCurrName','Curr\CurrController@checkCurrName')->middlewa
 //章节添加
 Route::get('/chapter','Curr\CurrController@chapter')->middleware('login');
 Route::get('/chapter','Curr\CurrController@chapter');
+//课程编辑页面
+Route::get('/curr_edit/{curr_id}','Curr\CurrController@curr_edit')->middleware('login');
+//课程修改
+Route::post('/curr_update','Curr\CurrController@curr_update');
 //课程图片上传
 Route::post('/uploadImg','upload\UploadController@uploadImg');
 //章节添加执行

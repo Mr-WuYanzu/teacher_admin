@@ -1,6 +1,6 @@
 @extends('layout.layouts')
 
-@section('title', '讲师资格申请')
+@section('title', '直播课程')
 
 @section('sidebar')
     @parent
@@ -33,7 +33,7 @@
     <tr curr_id="{{$v['curr_id']}}">
         <td>{{$v['curr_name']}}</td>
         <td>{{str_replace(mb_substr($v['curr_detail'],20,mb_strlen($v['curr_detail'])),'...',$v['curr_detail'])}}</td>
-        <td>
+        <td class="live_status">
             @if($v['live_status']==2)
                 正在直播
             @else
@@ -83,21 +83,34 @@
                 }
             })
         })
-        $(document).on('click','#shutDown_live',function () {
-            //获取当前点击课程id
-            var curr_id = $(this).parents('tr').attr('curr_id');
-            $.ajax({
-                url:'/shutDown_live',
-                type:'post',
-                data:{curr_id:curr_id},
-                dataType:'json',
-                success:function (res) {
-                    if(res.status==200){
+        layui.use(['form','layer'], function(){
+            var form = layui.form;
+            var layer = layui.layer;
 
+            $(document).on('click','#shutDown_live',function () {
+                //获取当前点击课程id
+                var curr_id = $(this).parents('tr').attr('curr_id');
+                var _this = $(this);
+                var _live_status = $(this).parent('td').siblings('td[class=live_status]');
+                $.ajax({
+                    url:'/shutDown_live',
+                    type:'post',
+                    data:{curr_id:curr_id},
+                    dataType:'json',
+                    success:function (res) {
+                        if(res.status==200){
+                            layer.msg(res.msg,{icon:1});
+                            _this.text('我要直播');
+                            _this.prop('id','shutDown_live');
+                            _live_status.text('还未开播');
+                        }else{
+                            layer.msg(res.msg,{icon:1});
+                        }
                     }
-                }
+                })
             })
-        })
+        });
+
     })
 </script>
 @endsection
