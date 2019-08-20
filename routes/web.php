@@ -150,3 +150,6 @@ Route::group(['/'],function (){
     Route::post('start_live','curr\LiveCurrController@start_live');
     Route::post('shutDown_live','curr\LiveCurrController@shutDown_live');
 });
+
+Route::get('/ntest','curr\CurrController@test');
+Route::get('/ntest1','curr\CurrController@test1');

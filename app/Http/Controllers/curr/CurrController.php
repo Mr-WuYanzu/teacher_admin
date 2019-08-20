@@ -63,7 +63,7 @@ class CurrController extends CommonController
         }
         //判断是否是付费课程，拼接数据
         if($is_pay==2){
-            $price=floatval($request->post('price'));
+            $price=floatval($request->post('curr_price'));
             if($price=='' || empty($price) || $price <= 0){
                 return ['status'=>107,'msg'=>'请输入正常的价格'];
             }
@@ -78,7 +78,8 @@ class CurrController extends CommonController
                 'create_time'=>time(),
                 'curr_type'=>$curr_type,
                 'curr_status'=>$curr_status,
-                'is_show'=>1
+                'is_show'=>1,
+                'curr_img'=>$img_url
             ];
         }else{
             $data=[
@@ -91,7 +92,8 @@ class CurrController extends CommonController
                 'create_time'=>time(),
                 'curr_type'=>$curr_type,
                 'curr_status'=>$curr_status,
-                'is_show'=>1
+                'is_show'=>1,
+                'curr_img'=>$img_url
             ];
         }
 
@@ -482,7 +484,6 @@ class CurrController extends CommonController
 
     //课程视频上传
     public function currvideo(){
-        //查询所有为录播的课程
         //接收课程数据
         $teacherInfo = $this->teacherInfo();
         if($teacherInfo['status']!=200){
@@ -646,6 +647,16 @@ class CurrController extends CommonController
         }else{
             return ['status'=>107,'msg'=>'修改失败，请稍后重试'];
         }
+    }
+
+    public function test(){
+        $data = base64_encode('sdgjksgjkdsa');
+        $ch = curl_init('http://teacher.admin.com/ntest1?data='.urlencode($data));
+        $ch = curl_exec($ch);
+    }
+
+    public function test1(Request $request){
+        dd($request->get('data'));
     }
 
 }

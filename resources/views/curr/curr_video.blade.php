@@ -130,6 +130,7 @@
                                     data:formData,
                                     processData: false,
                                     contentType: false,
+                                    async:false,
                                     dataType: 'json',
                                     success:function (data) {
                                         console.log(data);

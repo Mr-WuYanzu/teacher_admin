@@ -101,7 +101,7 @@ class UploadController extends Controller
 //                        dd(Storage::deleteDirectory('app/curr'));
 //                        dd(rmdir($this->config['savePath']));
 //                        Storage::deleteDirectory($this->config['savePath']);
-                        return ['name'=>$fileName,'size'=>$size,'path'=>'upload/','fileName'=>$newname];
+                        return ['name'=>$fileName,'size'=>$size,'path'=>'currVideo/'.date('Y-m-d').'/','fileName'=>$newname];
                     }
                 }
             }else{

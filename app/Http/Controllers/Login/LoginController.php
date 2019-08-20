@@ -109,7 +109,8 @@ class LoginController extends Controller
     			session(['user'=>['user_id'=>$user['user_id'],'user_name'=>$user->user_name]]);
     			$this->response('登录成功',1,6);
     		}else{
-    			$this->response('你还不是讲师,请先申请',3,$user->user_id);
+                session(['user'=>['user_id'=>$user['user_id'],'user_name'=>$user->user_name]]);
+    			$this->response('你还不是讲师,即将跳转至申请页面',3,$user->user_id);
     		}
     	}
     }

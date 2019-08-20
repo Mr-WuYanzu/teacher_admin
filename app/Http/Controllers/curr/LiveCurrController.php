@@ -60,7 +60,7 @@ class LiveCurrController extends CommonController
         $keyInfo = LiveModel::where(['curr_id'=>$curr_id,['key_expire','>',time()]])->first();
         $live_url = 'rtmp://192.168.136.131:1935/cctvf?key='.$key;
         if($keyInfo){
-            $result = LiveModel::where(['live_id'=>$keyInfo['live_id']])->update(['live_key'=>$key,'key_expire'=>time()+60*60*24,'live_url'=>$live_url]);
+            $result = LiveModel::where(['live_id'=>$keyInfo['live_id']])->update(['live_key'=>$key,'key_expire'=>time()+60*60*24,'curr_live_url'=>$live_url]);
             if($result){
                 return ['status'=>200,'live_url'=>'rtmp://192.168.136.131:1935/cctvf?key='.$key,'key' => md5($teacherInfo['t_name'])];
             }else{
@@ -72,7 +72,7 @@ class LiveCurrController extends CommonController
                 'live_key'=>$key,
                 'key_expire'=>time()+60*60*24,
                 'curr_id'=>$curr_id,
-                'live_url'=>$live_url
+                'curr_live_url'=>$live_url
             ];
             $result = LiveModel::insert($data);
             if($result){

@@ -65,7 +65,7 @@ class CurrTestController extends CommonController
     	//实例化模型类
     	$classHourModel=new CurrClassHourModel();
     	//获取课程章节课时信息
-    	$classHourInfo=$classHourModel->where('chapter_id',$chapter_id)->where('class_type',2)->orderBy('class_hour_num','asc')->get()->toArray();
+    	$classHourInfo=$classHourModel->where('chapter_id',$chapter_id)->orderBy('class_hour_num','asc')->get()->toArray();
     	//课程章节下有课时直接返回
     	if(!empty($classHourInfo)){
     		return $classHourInfo;

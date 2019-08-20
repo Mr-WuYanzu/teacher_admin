@@ -22,7 +22,6 @@ class TeacherController extends CommonController
         $type=1;
         //验证用户是否登录
         $user_id = session('user.user_id');
-
         if(empty($user_id)){
             return redirect('/login/login');
         }
@@ -43,7 +42,6 @@ class TeacherController extends CommonController
                 $type=3;
             }
         }
-
         return view('teacher.apply',['type'=>$type]);
     }
 
